@@ -18,6 +18,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "@rollup/pluginutils": "^4.1.0",
     "@types/node-fetch": "^2.5.7",
     "prettier": "^2.1.2",
     "rollup": "^2.33.3",

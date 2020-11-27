@@ -57,6 +57,7 @@ export interface GQLTransactionsResultInterface {
 
 export default interface GQLResultInterface {
   data: {
+    transaction: GQLNodeInterface;
     transactions: GQLTransactionsResultInterface;
   };
 }

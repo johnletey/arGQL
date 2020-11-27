@@ -1,5 +1,9 @@
 import fetch from "node-fetch";
-import GQLResultInterface, { GQLEdgeInterface } from "./types";
+import GQLResultInterface, {
+  GQLEdgeInterface,
+  GQLNodeInterface,
+} from "./types";
+import txQuery from "./queries/tx.gql";
 
 export const run = async (
   query: string,
@@ -46,4 +50,9 @@ export const all = async (
   }
 
   return edges;
+};
+
+export const tx = async (id: string): Promise<GQLNodeInterface> => {
+  const res = await run(txQuery, { id });
+  return res.data.transaction;
 };
