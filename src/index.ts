@@ -56,3 +56,13 @@ export const tx = async (id: string): Promise<GQLNodeInterface> => {
   const res = await run(txQuery, { id });
   return res.data.transaction;
 };
+
+export const fetchTxTag = async (
+  id: string,
+  name: string
+): Promise<string | undefined> => {
+  const res = await tx(id);
+
+  const tag = res.tags.find((tag) => tag.name === name);
+  if (tag) return tag.value;
+};
