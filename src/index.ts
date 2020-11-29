@@ -29,7 +29,7 @@ export const run = async (
 export const all = async (
   query: string,
   variables?: Record<string, unknown>
-): Promise<any> => {
+): Promise<GQLEdgeInterface[]> => {
   let hasNextPage = true;
   let edges: GQLEdgeInterface[] = [];
   let cursor: string = "";
