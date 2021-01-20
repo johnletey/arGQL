@@ -27,7 +27,7 @@ Similar to the `run` function, the `all` function receives a query and optional 
 
 The one key difference is that it returns all possible transactions returned from running this query. As the Arweave GraphQL endpoint is paginated, this returns all the data by traversing through the pages.
 
-The query passed in must follow the outline shown 
+The query passed in must follow the outline shown below:
 
 ```
 query($cursor: String) {
@@ -45,3 +45,13 @@ query($cursor: String) {
   }
 }
 ```
+
+### `tx(id)`
+
+The `tx` function recieves as an input a valid Arweave transaction id. The function will then return all information about the transaction that the GraphQL endpoint supports.
+
+Note that this function does not return the transaction data.
+
+### `fetchTxTag(id, name)`
+
+This function will fetch all tags for the supplied transaction. Then, if it finds a tag with the name provided, it will return the tag value. Else, it will return `undefined`.
