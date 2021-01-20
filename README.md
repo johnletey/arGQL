@@ -45,3 +45,32 @@ query($cursor: String) {
   }
 }
 ```
+
+### `tx: (id)` 
+
+Returns a GQLNodeInterface object containing all the meta data pertaining to the tx in question. 
+
+```javascript
+export interface GQLNodeInterface {
+  id: string;
+  anchor: string;
+  signature: string;
+  recipient: string;
+  owner: GQLOwnerInterface;
+  fee: GQLAmountInterface;
+  quantity: GQLAmountInterface;
+  data: GQLMetaDataInterface;
+  tags: GQLTagInterface[];
+  block: GQLBlockInterface;
+  parent: {
+    id: string;
+  };
+}
+```
+### `fetchTxTag(id, name)`
+
+Returns the value, if present, of a given tag of the tx.
+
+```javascript
+let tagValue = await fetchTxTag(txid, tagName)
+```
