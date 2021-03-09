@@ -1,9 +1,9 @@
-import fetch from "node-fetch";
+import axios from "axios";
 import GQLResultInterface, {
   GQLEdgeInterface,
   GQLNodeInterface,
-} from "./types";
-import txQuery from "./queries/tx.gql";
+} from "./faces";
+import txQuery from "./queries/tx";
 
 export const run = async (
   query: string,
@@ -15,15 +15,17 @@ export const run = async (
   });
 
   const requestOptions = {
-    method: "POST",
     headers: {
       "content-type": "application/json",
     },
-    body: graphql,
+    data: graphql,
   };
 
-  const res = await fetch("https://arweave.net/graphql", requestOptions);
-  return await res.clone().json();
+  const { data: res } = await axios.get(
+    "https://arweave.net/graphql",
+    requestOptions
+  );
+  return res;
 };
 
 export const all = async (

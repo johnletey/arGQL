@@ -1,3 +1,4 @@
+export default `
 query($id: ID!) {
   transaction(id: $id) {
     id
@@ -35,3 +36,4 @@ query($id: ID!) {
     }
   }
 }
+`;

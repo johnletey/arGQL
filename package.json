@@ -1,28 +1,20 @@
 {
   "name": "ar-gql",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "author": "John Letey <johnletey@gmail.com>",
-  "repository": "git@github.com:johnletey/arGQL.git",
+  "repository": "https://github.com/johnletey/arGQL",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
+    "build": "tsc",
     "fmt": "prettier --write ."
   },
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "files": [
-    "dist"
-  ],
-  "types": "dist/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "axios": "^0.21.1"
   },
   "devDependencies": {
-    "@rollup/pluginutils": "^4.1.0",
-    "@types/node-fetch": "^2.5.7",
-    "prettier": "^2.1.2",
-    "rollup": "^2.33.3",
-    "rollup-plugin-typescript2": "^0.29.0",
-    "typescript": "^4.0.5"
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3"
   }
 }
