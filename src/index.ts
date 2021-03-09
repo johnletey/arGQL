@@ -1,8 +1,8 @@
-import axios from "axios";
 import GQLResultInterface, {
   GQLEdgeInterface,
   GQLNodeInterface,
 } from "./faces";
+import axios from "axios";
 import txQuery from "./queries/tx";
 
 export const run = async (
@@ -14,17 +14,16 @@ export const run = async (
     variables,
   });
 
-  const requestOptions = {
-    headers: {
-      "content-type": "application/json",
-    },
-    data: graphql,
-  };
-
-  const { data: res } = await axios.get(
+  const { data: res } = await axios.post(
     "https://arweave.net/graphql",
-    requestOptions
+    graphql,
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
   );
+
   return res;
 };
 
