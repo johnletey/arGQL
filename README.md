@@ -34,6 +34,7 @@ query($cursor: String) {
   transactions(
     # your query parameters
     after: $cursor
+    fetch:100
   ) {
     pageInfo {
       hasNextPage
