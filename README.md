@@ -36,7 +36,7 @@ query($cursor: String) {
       
     # standard template below
     after: $cursor
-    fetch: 100
+    first: 100
   ) {
     pageInfo {
       hasNextPage
