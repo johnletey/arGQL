@@ -31,24 +31,24 @@ The query passed in must follow the outline shown below:
 
 ```
 query($cursor: String) {
-	transactions(
- 		# your query parameters
-  	  
-		# standard template below
-		after: $cursor
-		fetch: 100
-	) {
-		pageInfo {
-			hasNextPage
-		}
-		edges {
-			cursor
-			node {
-				# what tx data you want to quwry for:
-				
-			}
-		}
-	}
+  transactions(
+     # your query parameters
+      
+    # standard template below
+    after: $cursor
+    fetch: 100
+  ) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        # what tx data you want to quwry for:
+        
+      }
+    }
+  }
 }
 ```
 
