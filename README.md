@@ -32,15 +32,21 @@ The query passed in must follow the outline shown below:
 ```
 query($cursor: String) {
   transactions(
-    # your query parameters
+    # your query parameters
+      
+    # standard template below
     after: $cursor
+    first: 100
   ) {
     pageInfo {
       hasNextPage
     }
     edges {
       cursor
-      # whatever else you want to query for
+      node {
+        # what tx data you want to query for:
+        
+      }
     }
   }
 }
