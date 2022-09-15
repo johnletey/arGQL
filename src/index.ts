@@ -5,6 +5,9 @@ import GQLResultInterface, {
 import axios from "axios";
 import txQuery from "./queries/tx";
 
+let GQL_ENDPOINT = "https://arweave.net/graphql" //default
+export const setEndpointUrl = (full_GQL_Url: string) => GQL_ENDPOINT = full_GQL_Url
+
 export const run = async (
   query: string,
   variables?: Record<string, unknown>
@@ -15,7 +18,7 @@ export const run = async (
   });
 
   const { data: res } = await axios.post(
-    "https://arweave.net/graphql",
+    GQL_ENDPOINT,
     graphql,
     {
       headers: {

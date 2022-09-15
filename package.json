@@ -11,7 +11,7 @@
   "main": "dist/index",
   "types": "dist/index",
   "dependencies": {
-    "axios": "^0.25.0"
+    "axios": "^0.27.2"
   },
   "devDependencies": {
     "prettier": "^2.2.1",
