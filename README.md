@@ -59,3 +59,7 @@ The `tx` function recieves as an input a valid Arweave transaction id. The funct
 ### `fetchTxTag(id, name)`
 
 This function will fetch all tags for the supplied transaction. Then, if it finds a tag with the name provided, it will return the tag value. Else, it will return `undefined`.
+
+### `setEndpointUrl(GQL_URL)`
+
+Set the GQL endpoint. Defaults to `https://arweave.net/graphql`.
