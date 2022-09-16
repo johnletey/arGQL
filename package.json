@@ -1,11 +1,16 @@
 {
-  "name": "ar-gql",
+  "name": "arca-gql",
   "version": "0.0.6",
   "author": "John Letey <johnletey@gmail.com>",
-  "repository": "https://github.com/johnletey/arGQL",
+  "contributors": [
+    "Ros McMahon <rosmcmahon@gmail.com>",
+    "John Letey <johnletey@gmail.com>"
+  ],
+  "repository": "https://github.com/ARCA-Arweave/arca-gql",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "npx rimraf dist && tsc",
+    "postversion": "git push && git push --tags && npm run build && npm publish",
     "fmt": "prettier --write ."
   },
   "main": "dist/index",
