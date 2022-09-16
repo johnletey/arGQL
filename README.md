@@ -1,4 +1,4 @@
-# `arGQL`
+# `arca-gql` - a fork of ar-gql to add functionality
 
 [![Version](https://img.shields.io/npm/v/ar-gql?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/ar-gql)
 
@@ -8,9 +8,9 @@
 
 ```sh
 # npm
-npm install ar-gql
+npm i arca-gql
 # yarn
-yarn add ar-gql
+yarn add arca-gql
 ```
 
 ## Functions
@@ -54,9 +54,7 @@ query($cursor: String) {
 
 ### `tx(id)`
 
-The `tx` function recieves as an input a valid Arweave transaction id. The function will then return all information about the transaction that the GraphQL endpoint supports.
-
-Note that this function does not return the transaction data.
+The `tx` function recieves as an input a valid Arweave transaction id. The function will then return all metadata information about the transaction that the GraphQL endpoint supports.
 
 ### `fetchTxTag(id, name)`
 
