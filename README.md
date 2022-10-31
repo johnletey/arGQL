@@ -1,6 +1,6 @@
-# `arca-gql` - a fork of ar-gql to add functionality
+# `ar-gql`
 
-[![Version](https://img.shields.io/npm/v/arca-gql?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/arca-gql)
+[![Version](https://img.shields.io/npm/v/ar-gql?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/ar-gql)
 
 > A JavaScript/TypeScript package that makes interaction with the Arweave GraphQL endpoint simple and easy.
 
@@ -8,9 +8,9 @@
 
 ```sh
 # npm
-npm i arca-gql
+npm i ar-gql
 # yarn
-yarn add arca-gql
+yarn add ar-gql
 ```
 
 ## Functions
