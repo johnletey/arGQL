@@ -10,7 +10,8 @@ export const setEndpointUrl = (full_GQL_Url: string) => GQL_ENDPOINT = full_GQL_
 
 export const run = async (
   query: string,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  gqlUrl?: string,
 ): Promise<GQLResultInterface> => {
   const graphql = JSON.stringify({
     query,
@@ -18,7 +19,7 @@ export const run = async (
   });
 
   const { data: res } = await axios.post(
-    GQL_ENDPOINT,
+    gqlUrl || GQL_ENDPOINT,
     graphql,
     {
       headers: {
@@ -32,7 +33,8 @@ export const run = async (
 
 export const all = async (
   query: string,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  gqlUrl?: string,
 ): Promise<GQLEdgeInterface[]> => {
   let hasNextPage = true;
   let edges: GQLEdgeInterface[] = [];
@@ -40,10 +42,11 @@ export const all = async (
 
   while (hasNextPage) {
     const res = (
-      await run(query, {
-        ...variables,
-        cursor,
-      })
+      await run(
+        query, 
+        { ...variables, cursor },
+        gqlUrl,
+      )
     ).data.transactions;
 
     if (res.edges && res.edges.length) {
@@ -56,7 +59,7 @@ export const all = async (
   return edges;
 };
 
-export const tx = async (id: string): Promise<GQLNodeInterface> => {
+export const tx = async (id: string, gqlUrl?: string): Promise<GQLNodeInterface> => {
   const isBrowser: boolean = typeof window !== "undefined";
 
   if (isBrowser) {
@@ -64,7 +67,7 @@ export const tx = async (id: string): Promise<GQLNodeInterface> => {
     if (id in cache) return JSON.parse(cache[id]);
   }
 
-  const res = await run(txQuery, { id });
+  const res = await run(txQuery, { id }, gqlUrl);
 
   if (isBrowser && res.data.transaction.block) {
     const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
@@ -77,9 +80,10 @@ export const tx = async (id: string): Promise<GQLNodeInterface> => {
 
 export const fetchTxTag = async (
   id: string,
-  name: string
+  name: string,
+  gqlUrl?: string
 ): Promise<string | undefined> => {
-  const res = await tx(id);
+  const res = await tx(id, gqlUrl);
 
   const tag = res.tags.find((tag) => tag.name === name);
   if (tag) return tag.value;
