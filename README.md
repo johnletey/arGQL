@@ -15,13 +15,15 @@ yarn add ar-gql
 
 ## Functions
 
-### `run(query, variables?)`
+> optional `gqlUrl` argument has been added to all functions to allow specifying of the gql endpoint url on each function call. This is useful for performance testing of endpoints or temporary switching for specific features not available on current endpoint.
+
+### `run(query, variables?, gqlUrl?)`
 
 The `run` function receives as input a required GraphQL query (compatible with the Arweave GraphQL endpoint) and an optional object of GraphQL variables for the query.
 
 The function returns the result of this query with the variables passed in, if any, returned by the Arweave GraphQL endpoint.
 
-### `all(query, variables?)`
+### `all(query, variables?, gqlUrl?)`
 
 Similar to the `run` function, the `all` function receives a query and optional variables.
 
@@ -52,11 +54,11 @@ query($cursor: String) {
 }
 ```
 
-### `tx(id)`
+### `tx(id, gqlUrl?)`
 
 The `tx` function recieves as an input a valid Arweave transaction id. The function will then return all metadata information about the transaction that the GraphQL endpoint supports.
 
-### `fetchTxTag(id, name)`
+### `fetchTxTag(id, name, gqlUrl?)`
 
 This function will fetch all tags for the supplied transaction. Then, if it finds a tag with the name provided, it will return the tag value. Else, it will return `undefined`.
 
