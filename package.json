@@ -9,17 +9,33 @@
   "repository": "https://github.com/johnletey/arGql",
   "license": "MIT",
   "scripts": {
-    "build": "npx rimraf dist && tsc",
+    "build": "rimraf dist && tsc",
     "postversion": "git push && git push --tags && npm run build && npm publish",
+    "test": "mocha **/*.spec.ts",
     "fmt": "prettier --write ."
   },
   "main": "dist/index",
   "types": "dist/index",
-  "dependencies": {
-    "axios": "^0.27.2"
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "mocha": {
+    "extension": [
+      "ts"
+    ],
+    "node-option": [
+      "require=ts-node/register",
+      "no-warnings"
+    ]
   },
   "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "prettier": "^2.2.1",
+    "rimraf": "^4.1.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.2.3"
   }
 }
