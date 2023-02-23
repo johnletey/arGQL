@@ -50,7 +50,9 @@ describe('ar-gql tests', function(){
 		}
 	})
 
-	it('should execute `run` successfully', async()=> {
+	it('should execute `run` successfully', async function() {
+		this.timeout(5_000)
+
 		const argql = arGql()
 		const res = await argql.run(testQuery) 
 		expect(res.data.transactions.edges.length).to.be.greaterThan(0)
