@@ -1,6 +1,8 @@
 {
   "name": "ar-gql",
   "version": "0.0.11",
+  "main": "dist/index",
+  "types": "dist/index",
   "author": "John Letey <johnletey@gmail.com>",
   "contributors": [
     "Ros McMahon <rosmcmahon@gmail.com>",
@@ -14,11 +16,6 @@
     "test": "mocha **/*.spec.ts",
     "fmt": "prettier --write ."
   },
-  "main": "dist/index",
-  "types": "dist/index",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "mocha": {
     "extension": [
       "ts"
@@ -27,6 +24,9 @@
       "require=ts-node/register",
       "no-warnings"
     ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
