@@ -20,7 +20,7 @@ export function arGql(endpointUrl?: string){
       variables,
     });
   
-    const { json, ok, status, statusText } = await fetch(_endpointUrl, {
+    const res = await fetch(_endpointUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -29,11 +29,11 @@ export function arGql(endpointUrl?: string){
       body: graphql,
     });
 
-    if(!ok){ 
-      throw new Error(`(${status}) ${statusText}`)
+    if(!res.ok){ 
+      throw new Error(`(${res.status}) ${res.statusText}`)
     }
   
-    return await json();
+    return await res.json();
   };
 
   const all = async (
