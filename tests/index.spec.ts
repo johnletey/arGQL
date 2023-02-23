@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import {  } from 'mocha'
-import { arGql } from '../src/index'
+import arGql from '../src/index'
 
 
 const testQuery = `query($cursor: String) {

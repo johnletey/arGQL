@@ -4,7 +4,7 @@ import GQLResultInterface, {
 } from "./faces";
 import txQuery from "./queries/tx";
 
-export function arGql(endpointUrl?: string){
+export default function arGql(endpointUrl?: string){
   //sanity check
   if(endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql$/)){
     throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${endpointUrl}"`)
@@ -65,18 +65,18 @@ export function arGql(endpointUrl?: string){
   const tx = async (id: string): Promise<GQLNodeInterface> => {
     const isBrowser: boolean = typeof window !== "undefined";
   
-    if (isBrowser) {
-      const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
-      if (id in cache) return JSON.parse(cache[id]);
-    }
+    // if (isBrowser) {
+    //   const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
+    //   if (id in cache) return JSON.parse(cache[id]);
+    // }
   
     const res = await run(txQuery, { id });
   
-    if (isBrowser && res.data.transaction.block) {
-      const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
-      cache[id] = res.data.transaction;
-      localStorage.setItem("gqlCache", JSON.stringify(cache));
-    }
+    // if (isBrowser && res.data.transaction.block) {
+    //   const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
+    //   cache[id] = res.data.transaction;
+    //   localStorage.setItem("gqlCache", JSON.stringify(cache));
+    // }
   
     return res.data.transaction;
   };
@@ -97,10 +97,8 @@ export function arGql(endpointUrl?: string){
     all,
     tx,
     fetchTxTag,
-    getConfig: ()=> {
-      return { 
-        endpointUrl: _endpointUrl, 
-      }
-    }
+    getConfig: ()=> ({ 
+      endpointUrl: _endpointUrl, 
+    })
   }
 }
