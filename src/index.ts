@@ -38,7 +38,7 @@ export default function arGql(endpointUrl?: string): ArGql {
     });
 
     if(!res.ok){ 
-      throw new Error(`(${res.status}) ${res.statusText}`)
+      throw new Error(res.statusText, { cause: res.status })
     }
   
     return await res.json();

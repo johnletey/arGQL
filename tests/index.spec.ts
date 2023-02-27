@@ -58,6 +58,18 @@ describe('ar-gql tests', function(){
 		expect(res.data.transactions.edges.length).to.be.greaterThan(0)
 	})
 
+	it('should throw error in `run` with status details', async()=> {
+		const argql = arGql()
+		const badQuery = `query($cursor: String) { transactions( tags: [ { name:`
+		try{
+			const res = await argql.run(badQuery) 
+			expect(false).true //should not get here
+		}catch(e:any){
+			expect(e.cause).eq(400) //this is the status numer
+			expect(e.message).eq('Bad Request')
+		}
+	})
+
 	it('should execute `all` and retrieve several pages successfully', async function() {
 		this.timeout(10_000)
 
@@ -80,6 +92,5 @@ describe('ar-gql tests', function(){
 		const txMeta = await argql.fetchTxTag(txid, tag.name) 
 		expect(txMeta).eq(tag.value)
 	})
-
 
 })
