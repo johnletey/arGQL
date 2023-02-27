@@ -13,6 +13,15 @@ npm i ar-gql
 yarn add ar-gql
 ```
 
+> ## Migrating from version v0.x.x to v1.x.x
+> - Functions are no longer directly imported. You need to import an `ArGql` object and create instanced from it. See [Code Set Up](#code-set-up) section below
+> - As axios is no longer used internally `e.response` will always be undefined. You can catch regular `Error` objects with: 
+> ```ts
+> e.message   // status text
+> e.cause     // http status number 
+> ```
+> in all other Fetch error cases there will be a standard Fetch `TypeError` with a relevent message.
+
 ## Code Set Up
 
 ```ts
