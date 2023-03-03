@@ -14,7 +14,7 @@ yarn add ar-gql
 ```
 
 > ## Migrating from version v0.x.x to v1.x.x
-> - Functions are no longer directly imported. You need to import an `ArGql` object and create instanced from it. See [Code Set Up](#code-set-up) section below
+> - Functions are no longer directly imported. You need to import an `ArGqlInterface` object and create instanced from it. See [Code Set Up](#code-set-up) section below
 > - As axios is no longer used internally `e.response` will always be undefined. You can catch regular `Error` objects with: 
 > ```ts
 > e.message   // status text
@@ -25,7 +25,7 @@ yarn add ar-gql
 ## Code Set Up
 
 ```ts
-import arGql from 'ar-gql'
+import { arGql } from 'ar-gql'
 
 //...
 

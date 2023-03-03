@@ -4,7 +4,7 @@ import GQLResultInterface, {
 } from "./faces";
 import txQuery from "./queries/tx";
 
-export interface ArGql {
+export interface ArGqlInterface {
   run: (query: string, variables?: Record<string, unknown>) => Promise<GQLResultInterface>
   all: (query: string, variables?: Record<string, unknown>) => Promise<GQLEdgeInterface[]>
   tx: (id: string) => Promise<GQLNodeInterface>
@@ -12,7 +12,7 @@ export interface ArGql {
   getConfig: () => { endpointUrl: string }
 }
 
-export default function arGql(endpointUrl?: string): ArGql {
+export function arGql(endpointUrl?: string): ArGqlInterface {
   //sanity check
   if(endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql$/)){
     throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${endpointUrl}"`)
