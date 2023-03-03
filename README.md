@@ -91,6 +91,6 @@ The `tx` function recieves as an input a valid Arweave transaction id. The funct
 
 This function will fetch all tags for the supplied transaction. Then, if it finds a tag with the name provided, it will return the tag value. Else, it will return `undefined`.
 
-### `getConfig()`
+### `endpointUrl`
 
-Currently returns an object with a single field `endpointUrl` the GQL endpoint of the instance. 
+A read-only property of the GQL endpoint URL of the instance. 

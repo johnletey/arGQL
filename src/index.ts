@@ -9,7 +9,7 @@ export interface ArGqlInterface {
   all: (query: string, variables?: Record<string, unknown>) => Promise<GQLEdgeInterface[]>
   tx: (id: string) => Promise<GQLNodeInterface>
   fetchTxTag: (id: string, name: string) => Promise<string | undefined>
-  getConfig: () => { endpointUrl: string }
+  endpointUrl: string
 }
 
 export function arGql(endpointUrl?: string): ArGqlInterface {
@@ -105,8 +105,6 @@ export function arGql(endpointUrl?: string): ArGqlInterface {
     all,
     tx,
     fetchTxTag,
-    getConfig: ()=> ({ 
-      endpointUrl: _endpointUrl, 
-    })
+    endpointUrl: _endpointUrl, 
   }
 }

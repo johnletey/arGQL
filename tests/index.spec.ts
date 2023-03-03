@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import {  } from 'mocha'
-import arGql from '../src/index'
+import { arGql } from '../src/index'
 
 
 const testQuery = `query($cursor: String) {
@@ -35,11 +35,11 @@ describe('ar-gql tests', function(){
 
 	it('should initialise default and other instances of arGql', async()=> {
 		const argql = arGql()
-		expect(argql.getConfig().endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
+		expect(argql.endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
 		
 		const testUrl = 'https://test.com/graphql'
 		const testGql = arGql(testUrl)
-		expect(testGql.getConfig().endpointUrl, 'testUrl did not load').equal(testUrl)
+		expect(testGql.endpointUrl, 'testUrl did not load').equal(testUrl)
 
 		const badUrl = 'arweave.net'
 		try{
