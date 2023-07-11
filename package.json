@@ -13,7 +13,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "postversion": "git push && git push --tags && npm run build && npm publish",
-    "test": "mocha **/*.spec.ts",
+    "test": "npm run build && mocha **/*.spec.ts",
     "fmt": "prettier --write ."
   },
   "mocha": {
