@@ -5,5 +5,5 @@
     "declaration": true,
     "lib": ["ESNext", "DOM"]
   },
-  "files": ["src/index.ts"]
+  "include": ["src/**/*"]
 }
