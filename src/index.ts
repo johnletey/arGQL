@@ -4,9 +4,10 @@ import GQLResultInterface, {
 } from "./faces";
 import txQuery from "./queries/tx";
 
+export type PageCallback = (pageEdges: GQLEdgeInterface[]) => Promise<void>
 export interface ArGqlInterface {
   run: (query: string, variables?: Record<string, unknown>) => Promise<GQLResultInterface>
-  all: (query: string, variables?: Record<string, unknown>) => Promise<GQLEdgeInterface[]>
+  all: (query: string, variables?: Record<string, unknown>, pageCallback?: PageCallback) => Promise<GQLEdgeInterface[]>
   tx: (id: string) => Promise<GQLNodeInterface>
   fetchTxTag: (id: string, name: string) => Promise<string | undefined>
   endpointUrl: string
@@ -47,10 +48,12 @@ export function arGql(endpointUrl?: string): ArGqlInterface {
   const all = async (
     query: string,
     variables?: Record<string, unknown>,
+    pageCallback?: PageCallback,
   ): Promise<GQLEdgeInterface[]> => {
     let hasNextPage = true;
     let edges: GQLEdgeInterface[] = [];
     let cursor: string = "";
+    let pageCallbacks: Promise<void>[] = []
   
     while (hasNextPage) {
       const res = (
@@ -61,30 +64,24 @@ export function arGql(endpointUrl?: string): ArGqlInterface {
       ).data.transactions;
   
       if (res.edges && res.edges.length) {
-        edges = edges.concat(res.edges);
+        if(typeof pageCallback === 'function'){
+          pageCallbacks.push( pageCallback(res.edges) )
+        }else{
+          edges = edges.concat(res.edges);
+        }
         cursor = res.edges[res.edges.length - 1].cursor;
       }
       hasNextPage = res.pageInfo.hasNextPage;
     }
+
+    await Promise.all(pageCallbacks)
   
     return edges;
   };
 
   const tx = async (id: string): Promise<GQLNodeInterface> => {
-    const isBrowser: boolean = typeof window !== "undefined";
-  
-    // if (isBrowser) {
-    //   const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
-    //   if (id in cache) return JSON.parse(cache[id]);
-    // }
-  
+    
     const res = await run(txQuery, { id });
-  
-    // if (isBrowser && res.data.transaction.block) {
-    //   const cache = JSON.parse(localStorage.getItem("gqlCache") || "{}");
-    //   cache[id] = res.data.transaction;
-    //   localStorage.setItem("gqlCache", JSON.stringify(cache));
-    // }
   
     return res.data.transaction;
   };
