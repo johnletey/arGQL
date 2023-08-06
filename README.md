@@ -35,7 +35,7 @@ const argql = arGql() // default is `https://arweave.net/graphql`.
 const tx = await argql.tx('DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4')
 console.log(tx.id) // 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
 
-// you can set up another instance with another enpoint
+// you can set up another instance with another endpoint
 const goldsky = arGql('https://arweave-search.goldsky.com/graphql')
 // and use it at the same time
 const edges = await goldsky.tx(someTxid)
@@ -58,7 +58,7 @@ Similar to the `run` function, the `all` function receives a query and optional 
 
 The one key difference is that it returns all possible transactions returned from running this query. As the Arweave GraphQL endpoint is paginated, this returns all the data by traversing through the pages.
 
-The query passed in must follow the outline shown below:
+Your query must follow the template shown below:
 
 ```
 query($cursor: String) {
@@ -83,8 +83,8 @@ query($cursor: String) {
 }
 ```
 
-The optional `pageCallback` feature is the convenience functon to process pages as they are returned. The page results are processed asynchronously, and the function `all` returns after all callback functions have completed internally.
-> N.B When a callback function is passed to `all`, `all` returns an empty edges array once all page callbacks are complete `[]`.
+The optional `pageCallback` feature is a convenience function to process pages as they are returned. The page results are processed asynchronously, and the function `all` returns after all callback functions have completed internally.
+> N.B When a callback function is used, `all` returns an empty edges array once all page callbacks are complete `[]`.
 
 ### `tx(id)`
 
