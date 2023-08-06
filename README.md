@@ -52,7 +52,7 @@ The `run` function receives as input a required GraphQL query (compatible with t
 
 The function returns the result of this query with the variables passed in, if any, returned by the Arweave GraphQL endpoint.
 
-### `all(query, variables?)`
+### `all(query, variables?, pageCallback?)`
 
 Similar to the `run` function, the `all` function receives a query and optional variables.
 
@@ -82,6 +82,9 @@ query($cursor: String) {
   }
 }
 ```
+
+The optional `pageCallback` feature is the convenience functon to process pages as they are returned. The page results are processed asynchronously, and the function `all` returns after all callback functions have completed internally.
+> N.B When a callback function is passed to `all`, `all` returns an empty edges array once all page callbacks are complete `[]`.
 
 ### `tx(id)`
 
