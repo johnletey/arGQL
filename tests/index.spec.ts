@@ -76,6 +76,13 @@ describe('ar-gql tests', function(){
 		const argql = arGql()
 		const edges = await argql.all(testQuery) 
 		expect(edges.length).to.be.greaterThan(0)
+
+		const pageCallback = async (pageEdges: any[]) => {
+			expect(pageEdges.length).to.be.greaterThan(0)
+		}
+		const edges2 = await argql.all(testQuery, undefined, pageCallback)
+		expect(edges2.length).to.be.equal(0)
+
 	})
 
 	it('should execute `tx` successfully', async()=> {
