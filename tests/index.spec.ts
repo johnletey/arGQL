@@ -44,7 +44,7 @@ describe('ar-gql tests', function () {
 		const badUrl = 'arweave.net'
 		try {
 			const badGql = arGql(badUrl)
-			expect(true, 'no error was thrown with badUrl').false //should not get here
+			expect.fail('no error was thrown with badUrl!')
 		} catch (e: any) {
 			expect(e.message).eq(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${badUrl}"`)
 		}
@@ -63,7 +63,7 @@ describe('ar-gql tests', function () {
 		const badQuery = `query($cursor: String) { transactions( tags: [ { name:`
 		try {
 			const res = await argql.run(badQuery)
-			expect(false).true //should not get here
+			expect.fail('no Bad Request error was thrown')
 		} catch (e: any) {
 			expect(e.cause).eq(400) //this is the status numer
 			expect(e.message).eq('Bad Request')
