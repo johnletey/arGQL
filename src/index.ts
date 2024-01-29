@@ -57,14 +57,12 @@ export function arGql(endpointUrl?: string): ArGqlInterface {
     let pageCallbacks: Promise<void>[] = []
 
     while (hasNextPage) {
-      const resFull = (
+      const res = (
         await run(
           query,
           { ...variables, cursor },
         )
-      )
-      console.log('resFull', resFull)
-      const res = resFull.data.transactions;
+      ).data.transactions;
 
       if (res.edges && res.edges.length) {
         if (typeof pageCallback === 'function') {
