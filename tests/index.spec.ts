@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import {  } from 'mocha'
+import 'mocha'
 import { arGql } from '../src/index'
 
 
@@ -31,50 +31,50 @@ const testQuery = `query($cursor: String) {
 }`
 
 
-describe('ar-gql tests', function(){
+describe('ar-gql tests', function () {
 
-	it('should initialise default and other instances of arGql', async()=> {
+	it('should initialise default and other instances of arGql', async () => {
 		const argql = arGql()
 		expect(argql.endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
-		
+
 		const testUrl = 'https://test.com/graphql'
 		const testGql = arGql(testUrl)
 		expect(testGql.endpointUrl, 'testUrl did not load').equal(testUrl)
 
 		const badUrl = 'arweave.net'
-		try{
+		try {
 			const badGql = arGql(badUrl)
 			expect(true, 'no error was thrown with badUrl').false //should not get here
-		}catch(e:any){
+		} catch (e: any) {
 			expect(e.message).eq(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${badUrl}"`)
 		}
 	})
 
-	it('should execute `run` successfully', async function() {
+	it('should execute `run` successfully', async function () {
 		this.timeout(5_000)
 
 		const argql = arGql()
-		const res = await argql.run(testQuery) 
+		const res = await argql.run(testQuery)
 		expect(res.data.transactions.edges.length).to.be.greaterThan(0)
 	})
 
-	it('should throw error in `run` with status details', async()=> {
+	it('should throw error in `run` with status details', async () => {
 		const argql = arGql()
 		const badQuery = `query($cursor: String) { transactions( tags: [ { name:`
-		try{
-			const res = await argql.run(badQuery) 
+		try {
+			const res = await argql.run(badQuery)
 			expect(false).true //should not get here
-		}catch(e:any){
+		} catch (e: any) {
 			expect(e.cause).eq(400) //this is the status numer
 			expect(e.message).eq('Bad Request')
 		}
 	})
 
-	it('should execute `all` and retrieve several pages successfully', async function() {
-		this.timeout(10_000)
+	it('should execute `all` and retrieve several pages successfully', async function () {
+		this.timeout(20_000)
 
 		const argql = arGql()
-		const edges = await argql.all(testQuery) 
+		const edges = await argql.all(testQuery)
 		expect(edges.length).to.be.greaterThan(0)
 
 		const pageCallback = async (pageEdges: any[]) => {
@@ -85,18 +85,18 @@ describe('ar-gql tests', function(){
 
 	})
 
-	it('should execute `tx` successfully', async()=> {
+	it('should execute `tx` successfully', async () => {
 		const argql = arGql()
 		const txid = 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
-		const txMeta = await argql.tx(txid) 
+		const txMeta = await argql.tx(txid)
 		expect(txMeta.id).eq(txid)
 	})
 
-	it('should execute `fetchTxTag` successfully', async()=> {
+	it('should execute `fetchTxTag` successfully', async () => {
 		const argql = arGql()
 		const txid = 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
-		const tag = { name: 'Content-Type', value: 'text/plain'}
-		const txMeta = await argql.fetchTxTag(txid, tag.name) 
+		const tag = { name: 'Content-Type', value: 'text/plain' }
+		const txMeta = await argql.fetchTxTag(txid, tag.name)
 		expect(txMeta).eq(tag.value)
 	})
 
