@@ -3,6 +3,7 @@ import GQLResultInterface, {
   GQLNodeInterface,
 } from "./faces";
 import txQuery from "./queries/tx";
+import { fetchRetry } from "./utils/fetchRetry";
 
 export type PageCallback = (pageEdges: GQLEdgeInterface[]) => Promise<void>
 export interface ArGqlInterface {
@@ -14,7 +15,7 @@ export interface ArGqlInterface {
 
 }
 
-export function arGql(endpointUrl?: string): ArGqlInterface {
+export function arGql(endpointUrl?: string, retry = 0): ArGqlInterface {
   //sanity check
   if (endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql$/)) {
     throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${endpointUrl}"`)
@@ -30,14 +31,14 @@ export function arGql(endpointUrl?: string): ArGqlInterface {
       variables,
     });
 
-    const res = await fetch(_endpointUrl, {
+    const res = await fetchRetry(_endpointUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: graphql,
-    });
+    }, retry);
 
     if (!res.ok) {
       throw new Error(res.statusText, { cause: res.status })
