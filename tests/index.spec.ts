@@ -70,6 +70,20 @@ describe('ar-gql tests', function () {
 		}
 	})
 
+	const retry = 1 //10s per retry
+	it(`should throw error in 'run' after retrying connection ${retry} times`, async () => {
+		const badEndpoint = 'http://localhost:1234/graphql'
+
+		const argql = arGql(badEndpoint, retry)
+		try {
+			const res = await argql.run(testQuery)
+			expect.fail('no SocketError was thrown')
+		} catch (e: any) {
+			// console.debug(e)
+			expect(e.message).eq(`Failed to fetch from ${badEndpoint} after ${retry} retries`)
+		}
+	}).timeout(retry * 10_000 + 2_000)
+
 	it('should execute `all` and retrieve several pages successfully', async function () {
 		this.timeout(20_000)
 
