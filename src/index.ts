@@ -17,7 +17,7 @@ export interface ArGqlInterface {
 
 export function arGql(endpointUrl?: string, retry = 0): ArGqlInterface {
   //sanity check
-  if (endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql$/)) {
+  if (endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql*/)) {
     throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${endpointUrl}"`)
   }
   const _endpointUrl = endpointUrl || 'https://arweave.net/graphql' //default to arweave.net/graphql 
