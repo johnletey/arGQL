@@ -36,7 +36,7 @@ const tx = await argql.tx('DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4')
 console.log(tx.id) // 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
 
 // you can set up another instance with another endpoint
-const goldsky = arGql(GQLUrls.goldsky) // 'https://arweave-search.goldsky.com/graphql'
+const goldsky = arGql({ endpointUrl: GQLUrls.goldsky }) // 'https://arweave-search.goldsky.com/graphql'
 // and use it at the same time
 const edges = await goldsky.tx(someTxid)
 
