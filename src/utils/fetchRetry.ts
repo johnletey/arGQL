@@ -17,7 +17,7 @@ export const fetchRetry = async (
 
 		} catch (e) {
 			if (tries++ < retry) {
-				console.warn(`waiting ${retryMs}ms before retrying ${tries} of ${retry}`)
+				console.warn(`[ar-gql] waiting ${retryMs}ms before retrying ${tries} of ${retry}`)
 				await new Promise((resolve) => setTimeout(resolve, retryMs))
 				continue
 			}
