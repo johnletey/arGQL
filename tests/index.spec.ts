@@ -38,12 +38,13 @@ describe('ar-gql tests', function () {
 		expect(argql.endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
 
 		const testUrl = 'https://test.com/graphql'
-		const testGql = arGql(testUrl)
+		const testGql = arGql({ endpointUrl: testUrl })
 		expect(testGql.endpointUrl, 'testUrl did not load').equal(testUrl)
 
 		const badUrl = 'arweave.net'
 		try {
-			const badGql = arGql(badUrl)
+			//@ts-expect-error
+			const badGql = arGql({ endpointUrl: badUrl })
 			expect.fail('no error was thrown with badUrl!')
 		} catch (e: any) {
 			expect(e.message).eq(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${badUrl}"`)
@@ -70,19 +71,20 @@ describe('ar-gql tests', function () {
 		}
 	})
 
-	const retry = 1 //10s per retry
-	it(`should throw error in 'run' after retrying connection ${retry} times`, async () => {
+	const retries = 1
+	const retryMs = 1_000
+	it(`should throw error in 'run' after retrying connection ${retries} times`, async () => {
 		const badEndpoint = 'http://localhost:1234/graphql'
 
-		const argql = arGql(badEndpoint, retry)
+		const argql = arGql({ endpointUrl: badEndpoint, retries, retryMs })
 		try {
 			const res = await argql.run(testQuery)
 			expect.fail('no SocketError was thrown')
 		} catch (e: any) {
 			// console.debug(e)
-			expect(e.message).eq(`Failed to fetch from ${badEndpoint} after ${retry} retries`)
+			expect(e.message).eq(`Failed to fetch from ${badEndpoint} after ${retries} retries`)
 		}
-	}).timeout(retry * 10_000 + 2_000)
+	}).timeout(retries * retryMs + 2_000)
 
 	it('should execute `all` and retrieve several pages successfully', async function () {
 		this.timeout(20_000)
@@ -96,7 +98,6 @@ describe('ar-gql tests', function () {
 		}
 		const edges2 = await argql.all(testQuery, undefined, pageCallback)
 		expect(edges2.length).to.be.equal(0)
-
 	})
 
 	it('should execute `tx` successfully', async () => {
