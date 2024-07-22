@@ -2,9 +2,13 @@
 export const fetchRetry = async (
 	input: string,
 	init: RequestInit,
-	retry: number = 0,
+	opts: {
+		retry: number,
+		retryMs: number,
+	}
 ) => {
 
+	const { retry, retryMs } = opts
 	let tries = 0;
 	while (true) {
 		try {
@@ -13,9 +17,8 @@ export const fetchRetry = async (
 
 		} catch (e) {
 			if (tries++ < retry) {
-				const timeout = 10_000
-				console.warn(`waiting ${timeout}ms before retrying ${tries} of ${retry}`)
-				await new Promise((resolve) => setTimeout(resolve, timeout))
+				console.warn(`waiting ${retryMs}ms before retrying ${tries} of ${retry}`)
+				await new Promise((resolve) => setTimeout(resolve, retryMs))
 				continue
 			}
 			throw new TypeError(`Failed to fetch from ${input} after ${retry} retries`, { cause: e })

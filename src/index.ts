@@ -12,15 +12,26 @@ export interface ArGqlInterface {
   tx: (id: string) => Promise<GQLNodeInterface>
   fetchTxTag: (id: string, name: string) => Promise<string | undefined>
   endpointUrl: string
-
+}
+export interface ArGqlOptions {
+  endpointUrl?: `http${'' | 's'}://${string}/graphql${string}`,
+  /** @default 0 */
+  retries?: number,
+  /** @default 10_000 ms */
+  retryMs?: number,
 }
 
-export function arGql(endpointUrl?: string, retry = 0): ArGqlInterface {
-  //sanity check
-  if (endpointUrl && !endpointUrl.match(/^https?:\/\/.*\/graphql*/)) {
-    throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${endpointUrl}"`)
+export function arGql(options?: ArGqlOptions): ArGqlInterface {
+  const defaultOpts: ArGqlOptions = {
+    endpointUrl: 'https://arweave.net/graphql',
+    retries: 0,
+    retryMs: 10_000,
   }
-  const _endpointUrl = endpointUrl || 'https://arweave.net/graphql' //default to arweave.net/graphql 
+  const opts = { ...defaultOpts, ...options }
+  //sanity check
+  if (!opts.endpointUrl!.match(/^https?:\/\/.*\/graphql*/)) {
+    throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${opts.endpointUrl}"`)
+  }
 
   const run = async (
     query: string,
@@ -31,14 +42,21 @@ export function arGql(endpointUrl?: string, retry = 0): ArGqlInterface {
       variables,
     });
 
-    const res = await fetchRetry(_endpointUrl, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+    const res = await fetchRetry(
+      opts.endpointUrl!,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: graphql,
       },
-      body: graphql,
-    }, retry);
+      {
+        retry: opts.retries!,
+        retryMs: opts.retryMs!,
+      }
+    );
 
     if (!res.ok) {
       throw new Error(res.statusText, { cause: res.status })
@@ -104,7 +122,7 @@ export function arGql(endpointUrl?: string, retry = 0): ArGqlInterface {
     all,
     tx,
     fetchTxTag,
-    endpointUrl: _endpointUrl,
+    endpointUrl: opts.endpointUrl!,
   }
 }
 
