@@ -128,6 +128,6 @@ export function arGql(options?: ArGqlOptions): ArGqlInterface {
 
 /** some useful constants */
 export const GQLUrls = {
-  goldsky: 'https://arweave-search.goldsky.com/graphql',
-  arweave: 'https://arweave.net/graphql',
+  goldsky: 'https://arweave-search.goldsky.com/graphql' as `http${'' | 's'}://${string}/graphql${string}`,
+  arweave: 'https://arweave.net/graphql' as `http${'' | 's'}://${string}/graphql${string}`,
 }
