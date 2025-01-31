@@ -15,7 +15,10 @@ yarn add ar-gql
 
 > ## Migrating from previous versions to v3
 > - Functions are no longer directly imported. You need to import an `ArGqlInterface` object and create instanced from it. See [Code Set Up](#code-set-up) section below
-> - Errors have changed again (sorry!). `GQLError` is supplied and use it's type definition.
+> - Errors have changed again (sorry!). `GQLError` is supplied and you can use it's type definition.
+> ```ts
+> import { GQLError } from 'ar-gql/dist/faces'
+> ```
 
 ## Code Set Up
 
