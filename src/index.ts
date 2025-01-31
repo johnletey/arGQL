@@ -1,6 +1,7 @@
 import GQLResultInterface, {
   GQLEdgeInterface,
   GQLNodeInterface,
+  GQLError
 } from "./faces";
 import txQuery from "./queries/tx";
 import { fetchRetry } from "./utils/fetchRetry";
@@ -59,7 +60,12 @@ export function arGql(options?: ArGqlOptions): ArGqlInterface {
     );
 
     if (!res.ok) {
-      throw new Error(res.statusText, { cause: res.status })
+      let gqlError: string
+      try {
+        gqlError = await res.json()
+        gqlError = JSON.stringify(gqlError, null, 2)
+      } catch (e) { }
+      throw new GQLError(res.statusText, res, gqlError!)
     }
 
     return await res.json();

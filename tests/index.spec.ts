@@ -1,6 +1,7 @@
-import { expect } from 'chai'
+import { assert, expect } from 'chai'
 import 'mocha'
-import { arGql } from '../src/index'
+import { arGql, GQLUrls } from '../src/index'
+import { GQLError } from '../src/faces'
 
 
 const testQuery = `query($cursor: String) {
@@ -34,8 +35,8 @@ const testQuery = `query($cursor: String) {
 describe('ar-gql tests', function () {
 
 	it('should initialise default and other instances of arGql', async () => {
-		const argql = arGql()
-		expect(argql.endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
+		const gql = arGql()
+		expect(gql.endpointUrl, 'defaults did not load').equal('https://arweave.net/graphql')
 
 		const testUrl = 'https://test.com/graphql'
 		const testGql = arGql({ endpointUrl: testUrl })
@@ -43,7 +44,6 @@ describe('ar-gql tests', function () {
 
 		const badUrl = 'arweave.net'
 		try {
-			//@ts-expect-error
 			const badGql = arGql({ endpointUrl: badUrl })
 			expect.fail('no error was thrown with badUrl!')
 		} catch (e: any) {
@@ -54,20 +54,26 @@ describe('ar-gql tests', function () {
 	it('should execute `run` successfully', async function () {
 		this.timeout(5_000)
 
-		const argql = arGql()
-		const res = await argql.run(testQuery)
+		const gql = arGql()
+		const res = await gql.run(testQuery)
 		expect(res.data.transactions.edges.length).to.be.greaterThan(0)
 	})
 
-	it('should throw error in `run` with status details', async () => {
-		const argql = arGql()
-		const badQuery = `query($cursor: String) { transactions( tags: [ { name:`
+	it('should throw gql error reason', async () => {
+		const gql = arGql({ endpointUrl: GQLUrls.goldsky })
+		const badQuery = `query{ transactions( owners: "abcd" ){ badName } }`
 		try {
-			const res = await argql.run(badQuery)
-			expect.fail('no Bad Request error was thrown')
-		} catch (e: any) {
-			expect(e.cause).eq(400) //this is the status numer
+			const res = await gql.run(badQuery)
+			assert.fail('error should have been thrown')
+		} catch (err: unknown) {
+			const e = err as GQLError
+
+			expect(e.name).eq('GQLError')
 			expect(e.message).eq('Bad Request')
+			expect(e.response.status).eq(400)
+			expect(e.response.ok).eq(false)
+			expect(e.response.url).eq(GQLUrls.goldsky)
+			expect(typeof e.gqlError).eq('string')
 		}
 	})
 
@@ -76,9 +82,9 @@ describe('ar-gql tests', function () {
 	it(`should throw error in 'run' after retrying connection ${retries} times`, async () => {
 		const badEndpoint = 'http://localhost:1234/graphql'
 
-		const argql = arGql({ endpointUrl: badEndpoint, retries, retryMs })
+		const gql = arGql({ endpointUrl: badEndpoint, retries, retryMs })
 		try {
-			const res = await argql.run(testQuery)
+			const res = await gql.run(testQuery)
 			expect.fail('no SocketError was thrown')
 		} catch (e: any) {
 			// console.debug(e)
@@ -89,29 +95,29 @@ describe('ar-gql tests', function () {
 	it('should execute `all` and retrieve several pages successfully', async function () {
 		this.timeout(20_000)
 
-		const argql = arGql()
-		const edges = await argql.all(testQuery)
+		const gql = arGql()
+		const edges = await gql.all(testQuery)
 		expect(edges.length).to.be.greaterThan(0)
 
 		const pageCallback = async (pageEdges: any[]) => {
 			expect(pageEdges.length).to.be.greaterThan(0)
 		}
-		const edges2 = await argql.all(testQuery, undefined, pageCallback)
+		const edges2 = await gql.all(testQuery, undefined, pageCallback)
 		expect(edges2.length).to.be.equal(0)
 	})
 
 	it('should execute `tx` successfully', async () => {
-		const argql = arGql()
+		const gql = arGql()
 		const txid = 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
-		const txMeta = await argql.tx(txid)
+		const txMeta = await gql.tx(txid)
 		expect(txMeta.id).eq(txid)
 	})
 
 	it('should execute `fetchTxTag` successfully', async () => {
-		const argql = arGql()
+		const gql = arGql()
 		const txid = 'DeYQPjoEQLLds7usOMZFJFCe7VyTpodYl6Mok6UP6Z4'
 		const tag = { name: 'Content-Type', value: 'text/plain' }
-		const txMeta = await argql.fetchTxTag(txid, tag.name)
+		const txMeta = await gql.fetchTxTag(txid, tag.name)
 		expect(txMeta).eq(tag.value)
 	})
 
