@@ -43,7 +43,6 @@ describe('ar-gql tests', function () {
 
 		const badUrl = 'arweave.net'
 		try {
-			//@ts-expect-error
 			const badGql = arGql({ endpointUrl: badUrl })
 			expect.fail('no error was thrown with badUrl!')
 		} catch (e: any) {
