@@ -60,12 +60,12 @@ export function arGql(options?: ArGqlOptions): ArGqlInterface {
     );
 
     if (!res.ok) {
-      let gqlError: string
+      let gqlError = 'null'
       try {
         gqlError = await res.json()
         gqlError = JSON.stringify(gqlError, null, 2)
       } catch (e) { }
-      throw new GQLError(res.statusText, res, gqlError!)
+      throw new GQLError(res.statusText, Object.assign(res, { gqlError }))
     }
 
     return await res.json();

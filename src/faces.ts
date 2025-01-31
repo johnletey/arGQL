@@ -63,14 +63,12 @@ export default interface GQLResultInterface {
 }
 
 export class GQLError extends Error {
-  public response: Response;
-  public gqlError: string;
+  public cause: Response & { gqlError: string }
 
-  constructor(message: string, res: Response, gqlError: string) {
+  constructor(message: string, cause: Response & { gqlError: string }) {
     super(message);
     this.name = 'GQLError'; // Set the name property to reflect the custom error type
-    this.response = res;
-    this.gqlError = gqlError;
+    this.cause = cause
   }
 }
 
