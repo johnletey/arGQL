@@ -70,10 +70,10 @@ describe('ar-gql tests', function () {
 
 			expect(e.name).eq('GQLError')
 			expect(e.message).eq('Bad Request')
-			expect(e.response.status).eq(400)
-			expect(e.response.ok).eq(false)
-			expect(e.response.url).eq(GQLUrls.goldsky)
-			expect(typeof e.gqlError).eq('string')
+			expect(e.cause.status).eq(400)
+			expect(e.cause.ok).eq(false)
+			expect(e.cause.url).eq(GQLUrls.goldsky)
+			expect(typeof e.cause.gqlError).eq('string')
 		}
 	})
 
