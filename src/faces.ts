@@ -61,3 +61,16 @@ export default interface GQLResultInterface {
     transactions: GQLTransactionsResultInterface;
   };
 }
+
+export class GQLError extends Error {
+  public response: Response;
+  public gqlError: string;
+
+  constructor(message: string, res: Response, gqlError: string) {
+    super(message);
+    this.name = 'GQLError'; // Set the name property to reflect the custom error type
+    this.response = res;
+    this.gqlError = gqlError;
+  }
+}
+
