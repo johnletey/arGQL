@@ -1,4 +1,4 @@
-# `ar-gql` version 1
+# `ar-gql` 
 
 [![Version](https://img.shields.io/npm/v/ar-gql?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/ar-gql)
 
