@@ -31,7 +31,7 @@ export function arGql(options?: ArGqlOptions): ArGqlInterface {
   const opts = { ...defaultOpts, ...options }
   //sanity check
   if (!opts.endpointUrl!.match(/^https?:\/\/.*\/graphql*/)) {
-    throw new Error(`string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${opts.endpointUrl}"`)
+    console.warn(`warning: string doesn't appear to be a URL of the form <http(s)://some-domain/graphql>'. You entered "${opts.endpointUrl}"`)
   }
 
   const run = async (
