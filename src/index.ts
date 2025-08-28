@@ -59,16 +59,21 @@ export function arGql(options?: ArGqlOptions): ArGqlInterface {
       }
     );
 
-    if (!res.ok) {
-      let gqlError = 'null'
+    //workaround, apparently some errors are being returned as 200
+    let resJson: any = {};
+    try {
+      resJson = await res.json();
+    } catch (e) { }
+
+    if (!res.ok || !resJson.data) {
+      let gqlError = 'none';
       try {
-        gqlError = await res.json()
-        gqlError = JSON.stringify(gqlError, null, 2)
+        gqlError = JSON.stringify(resJson, null, 2);
       } catch (e) { }
-      throw new GQLError(res.statusText, Object.assign(res, { gqlError }))
+      throw new GQLError(res.statusText, Object.assign(res, { gqlError }));
     }
 
-    return await res.json();
+    return resJson as GQLResultInterface;
   };
 
   const all = async (
